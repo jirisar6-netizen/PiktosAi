@@ -1,35 +1,18 @@
-import { voiceEngine } from './voice.js';
+// app.js
+import { START_SET, getPictoUrl } from './api.js';
 
-let sentence = [];
+export function loadStartCards() {
+    const grid = document.getElementById('grid');
+    grid.innerHTML = ''; // Vyčistit
 
-window.addToSentence = function(id, text) {
-    const bar = document.getElementById('sentence-bar');
-    if (!bar) return;
-
-    // Odstranit placeholder při prvním kliku
-    const placeholder = document.getElementById('placeholder');
-    if (placeholder) placeholder.remove();
-
-    // Přidat obrázek do lišty
-    const img = document.createElement('img');
-    img.src = `https://api.arasaac.org/api/pictograms/${id}`;
-    img.style.height = "50px";
-    img.style.margin = "5px";
-    bar.appendChild(img);
-
-    sentence.push(text);
-    voiceEngine.speak(text); // Přečte hned jednotlivé slovo
-};
-
-window.readFullSentence = function() {
-    if (sentence.length > 0) {
-        voiceEngine.speak(sentence.join(" "));
-    }
-};
-
-window.clearSentence = function() {
-    sentence = [];
-    const bar = document.getElementById('sentence-bar');
-    bar.innerHTML = '<p id="placeholder">Klikej na piktogramy...</p>';
-};
-
+    START_SET.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            <img src="${getPictoUrl(item.id)}" alt="${item.text}">
+            <p>${item.text}</p>
+        `;
+        card.onclick = () => window.addCardToSentence(item.id, item.text);
+        grid.appendChild(card);
+    });
+}
