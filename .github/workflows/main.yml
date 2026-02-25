@@ -1,0 +1,25 @@
+name: Kontrola projektu Asistent
+
+on: [push]
+
+jobs:
+  check-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout kódu
+        uses: actions/checkout@v4
+
+      - name: Kontrola existence klíčových souborů
+        run: |
+          files=("index.html" "app.js" "api.js" "voice.js" "style.css")
+          for file in "${files[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "CHYBA: Soubor $file chybí nebo má špatné jméno (pozor na velká písmena)!"
+              exit 1
+            fi
+          done
+          echo "Všechny soubory jsou v pořádku."
+
+      - name: Simulace build procesu
+        run: echo "Projekt je připraven pro nasazení na Vercel."
+        
