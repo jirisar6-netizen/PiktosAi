@@ -134,6 +134,14 @@
         window.onload = async () => {
             // Tady by mohl AI asistent nabídnout "časté karty" (chci, jíst, pít, Jiřík)
         };
+        import { loadStartCards } from './app.js';
+
+// ... (předchozí kód)
+
+window.onload = () => {
+    loadStartCards();
+};
+        
     </script>
 </body>
 </html>
