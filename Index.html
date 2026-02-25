@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Asistent pro děti</title>
+    <style>
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .picto { border: 2px solid #ccc; padding: 10px; text-align: center; cursor: pointer; }
+        .picto:active { background: #e0f7fa; }
+        img { width: 100px; height: 100px; }
+    </style>
+</head>
+<body>
+    <div id="display">Zvol piktogram:</div>
+    <div class="grid" id="board"></div>
+
+    <script>
+        // Nastavení lokálního hlasu
+        const synth = window.speechSynthesis;
+        
+        async function mluv(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'cs-CZ';
+            utterance.pitch = 1.2; // Dětský tón
+            utterance.rate = 0.8;  // Pomalejší tempo
+            synth.speak(utterance);
+        }
+
+        // Volání ARASAAC API
+        async function nactiPiktogram(id, text) {
+            const board = document.getElementById('board');
+            const div = document.createElement('div');
+            div.className = 'picto';
+            div.innerHTML = `<img src="https://api.arasaac.org/api/pictograms/${id}" /><p>${text}</p>`;
+            div.onclick = () => mluv(text);
+            board.appendChild(div);
+        }
+
+        // Ukázka: Načtení pár základních věcí
+        // V reálné verzi toto bude řídit tvé lokální LLM
+        nactiPiktogram(2548, "Chci");
+        nactiPiktogram(3033, "Pít");
+        nactiPiktogram(2335, "Jablko");
+    </script>
+</body>
+</html>
